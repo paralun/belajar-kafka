@@ -40,27 +40,26 @@ username="admin"
 password="admin-secret";
 };
 ```
-## Add Environment Server
+## Add Environment and Start Server
 #### Zookeeper
 ```
 # Linux
-export KAFKA_OPTS="-Djava.security.auth.login.config=/config/zookeeper_jaas.conf"
+export KAFKA_OPTS=-Djava.security.auth.login.config=/kafka/config/zookeeper_jaas.conf
+bin/zookeeper-server-start.sh -daemon config/plaintext/zookeeper.properties
 
 # Windows
-set KAFKA_OPTS="-Djava.security.auth.login.config=D:/config/zookeeper_jaas.conf"
+set KAFKA_OPTS=-Djava.security.auth.login.config=C:\kafka\config\plaintext\zookeeper_jaas.conf
+bin/zookeeper-server-start.bat -daemon config/plaintext/zookeeper.properties
 ```
 #### Kafka
 ```
 # Linux
-export KAFKA_OPTS="-Djava.security.auth.login.config=/config/kafka_server_jaas.conf"
+export KAFKA_OPTS=-Djava.security.auth.login.config=/kafka/config/kafka_server_jaas.conf
+bin/kafka-server-start.sh -daemon config/plaintext/server.properties
 
 # Windows
-set KAFKA_OPTS="-Djava.security.auth.login.config=/KAFKA_HOME/config/kafka_server_jaas.conf"
-```
-## Starting Server
-```
-bin/zookeeper-server-start.sh/bat -daemon config/zookeeper.properties
-bin/kafka-server-start.sh/bat -daemon config/server.properties
+set KAFKA_OPTS=-Djava.security.auth.login.config=C:\kafka\config\plaintext\kafka_server_jaas.conf
+bin/kafka-server-start.bat -daemon config/plaintext/server.properties
 ```
 # Client
 ## Producer and Consumer
@@ -92,17 +91,17 @@ Client {
 ## Add Environment Client
 ```
 # Linux
-export KAFKA_OPTS="-Djava.security.auth.login.config=/KAFKA_HOME/config/kafka_client_jaas.conf"
+export KAFKA_OPTS=-Djava.security.auth.login.config=/kafka/config/kafka_client_jaas.conf
 
 # Windows
-set KAFKA_OPTS="-Djava.security.auth.login.config=/KAFKA_HOME/config/kafka_client_jaas.conf"
+set KAFKA_OPTS=-Djava.security.auth.login.config=C:\kafka\config\plaintext\kafka_client_jaas.conf
 ```
 ## Test Client
 ```
 # Consumer
-/bin/kafka-console-consumer.sh/bat --topic test-topic --from-beginning --consumer.config=config/consumer.properties --bootstrap-server=localhost:9092
+/bin/kafka-console-consumer.sh/bat --topic test-topic --consumer.config=config/plaintext/consumer.properties --bootstrap-server=localhost:9092
 
 # Producer
-/bin/kafka-console-producer.sh/bat --broker-list localhost:9092 --topic test-topic --producer.config=config/producer.properties
+/bin/kafka-console-producer.sh/bat --topic test-topic --producer.config=config/plaintext/producer.properties --bootstrap-server=localhost:9092
 ```
 # Java Client
