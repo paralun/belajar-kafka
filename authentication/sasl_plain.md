@@ -98,6 +98,9 @@ set KAFKA_OPTS=-Djava.security.auth.login.config=C:\kafka\config\plaintext\kafka
 ```
 ## Test Client
 ```
+# Create Topic
+/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --command-config config/plaintext/producer.properties --replication-factor 1 --partitions 1 --topic test-topic
+
 # Consumer
 /bin/kafka-console-consumer.sh/bat --topic test-topic --consumer.config=config/plaintext/consumer.properties --bootstrap-server=localhost:9092
 
