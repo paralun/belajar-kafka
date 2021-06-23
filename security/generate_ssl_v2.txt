@@ -1,0 +1,27 @@
+# Zookeeper
+openssl req -new -x509 -keyout ca-key -out ca-cert -days 3650
+
+keytool -keystore zookeeper.server.truststore.jks -alias ca-cert -import -file ca-cert
+
+keytool -keystore zookeeper.server.keystore.jks -alias zookeeper -validity 3650 -genkey -keyalg RSA -ext SAN=dns:localhost
+
+keytool -keystore zookeeper.server.keystore.jks -alias zookeeper -certreq -file ca-request-zookeeper
+
+openssl x509 -req -CA ca-cert -CAkey ca-key -in ca-request-zookeeper -out ca-signed-zookeeper -days 3650 -CAcreateserial
+
+keytool -keystore zookeeper.server.keystore.jks -alias ca-cert -import -file ca-cert
+
+keytool -keystore zookeeper.server.keystore.jks -alias zookeeper -import -file ca-signed-zookeeper
+
+# Broker
+keytool -keystore kafka.server.truststore.jks -alias ca-cert -import -file ca-cert
+
+keytool -keystore kafka.server.keystore.jks -alias kafka -validity 3650 -genkey -keyalg RSA -ext SAN=dns:localhost
+
+keytool -keystore kafka.server.keystore.jks -alias kafka -certreq -file ca-request-kafka
+
+openssl x509 -req -CA ca-cert -CAkey ca-key -in ca-request-kafka -out ca-signed-kafka -days 3650 -CAcreateserial
+
+keytool -keystore kafka.server.keystore.jks -alias ca-cert -import -file ca-cert
+
+keytool -keystore kafka.server.keystore.jks -alias kafka -import -file ca-signed-kafka
